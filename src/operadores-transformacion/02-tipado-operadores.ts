@@ -12,8 +12,8 @@ import {
   pluck,
 } from "rxjs";
 import { ajax } from "rxjs/ajax";
-import { GithubUser } from "./interfaces/github-user.interfaces";
-import { GithubUsers } from "./interfaces/github.users.interface";
+import { GithubUser } from "../interfaces/github-user.interfaces";
+import { GithubUsers } from "../interfaces/github.users.interface";
 
 //Referencias
 const body = document.querySelector("body");
@@ -47,14 +47,13 @@ const mostrarUsuarios = (usuarios: GithubUser[]) => {
 //Streams
 const input$ = fromEvent<KeyboardEvent>(textInput, "keyup");
 
-input$
-  .pipe(
-    debounceTime(500),
-    pluck("target", "value"),
-    map((texto) =>
-      ajax.getJSON(`https://api.github.com/search/users?q=${texto}`)
-    ),
-    mergeAll(),
-    pluck("items")
-  )
-  .subscribe(mostrarUsuarios);
+input$.pipe(
+  debounceTime(500),
+  pluck("target", "value"),
+  map((texto) =>
+    ajax.getJSON(`https://api.github.com/search/users?q=${texto}`)
+  ),
+  mergeAll(),
+  pluck("items")
+);
+// .subscribe(mostrarUsuarios);
